@@ -11,17 +11,24 @@ public class InputValidator {
     private static final int COUNT_INDEX = 1;
 
     public void validateInputDay(String inputDay) {
-        if (!isDayNumber(inputDay)) {
+        if (!isNumber(inputDay)) {
             displayAndThrowException(ErrorMessage.INCORRECT_DAY_FORMAT);
         }
     }
 
     public void validateInputOrderMenu(String inputOrderMenu) {
+        if (isWrongFormatOrderMenu(inputOrderMenu)) {
+            displayAndThrowException(ErrorMessage.INCORRECT_ORDER_FORMAT);
+        }
+    }
+
+    private boolean isWrongFormatOrderMenu(String inputOrderMenu) {
         for (String item : inputSplitByComma(inputOrderMenu)) {
             if (!isCorrectFormatMenuSplitByDash(item)) {
-                displayAndThrowException(ErrorMessage.INCORRECT_ORDER_FORMAT);
+                return true;
             }
         }
+        return false;
     }
 
     private List<String> inputSplitByComma(String inputOrderMenu) {
@@ -31,20 +38,29 @@ public class InputValidator {
 
     private boolean isCorrectFormatMenuSplitByDash(String oneOrderMenu) {
         List<String> menuAndCount = new ArrayList<>(List.of(oneOrderMenu.split(InputConstant.DASH.getConstant())));
-        return (isMenuKoreanOrEnglish(menuAndCount.get(MENU_INDEX))
-                && isCountNumber(menuAndCount.get(COUNT_INDEX)));
+        return !isNull(menuAndCount) && isNumber(menuAndCount.get(COUNT_INDEX));
     }
 
-    private boolean isMenuKoreanOrEnglish(String menu) {
-        return menu.matches(InputConstant.KOREAN_ENGLISH_PATTERN.getConstant());
+    private boolean isNull(List<String> menuAndCount) {
+        if (menuAndCount.isEmpty()) {
+            return true;
+        }
+
+        for (String item : menuAndCount) {
+            if (item.trim().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    private boolean isCountNumber(String count) {
-        return count.matches(InputConstant.DIGIT_PATTERN.getConstant());
-    }
+//    private boolean isMenuKoreanOrEnglish(String menu) {
+//        menu = menu.trim();
+//        return menu.matches(InputConstant.KOREAN_ENGLISH_PATTERN.getConstant());
+//    }
 
-    private boolean isDayNumber(String inputDay) {
-        return inputDay.matches(InputConstant.DIGIT_PATTERN.getConstant());
+    private boolean isNumber(String input) {
+        return input.trim().matches(InputConstant.DIGIT_PATTERN.getConstant());
     }
 
     private void displayAndThrowException(ErrorMessage errorType) {
