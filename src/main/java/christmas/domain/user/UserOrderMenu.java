@@ -1,6 +1,8 @@
-package christmas.domain;
+package christmas.domain.user;
 
+import christmas.domain.MenuList;
 import christmas.validator.system.SystemValidator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,5 +25,13 @@ public class UserOrderMenu {
 
     public Map<String, Integer> getMenuCategoryCount() {
         return MenuList.getCategoryCount(orderMenu.keySet());
+    }
+
+    public List<String> getOrderMenuNames() {
+        return new ArrayList<>(orderMenu.keySet());
+    }
+
+    public int getMenuCount(String menuName) {
+        return orderMenu.get(menuName);
     }
 }
