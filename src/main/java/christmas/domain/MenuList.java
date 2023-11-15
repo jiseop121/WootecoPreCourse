@@ -25,7 +25,7 @@ public enum MenuList {
             "레드와인", 60000,
             "샴페인", 25000
     )),
-    GIFT_MENU("증정 메뉴", Map.of(
+    GIFT_MENU("증정 이벤트", Map.of(
             "샴페인", BEVERAGE.menuDetails.get("샴페인")
     ));
 
