@@ -3,7 +3,10 @@ package christmas.domain.user;
 import christmas.domain.BenefitCalendar;
 import christmas.domain.MenuList;
 import christmas.service.BenefitCalculator;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserBenefit {
@@ -31,6 +34,15 @@ public class UserBenefit {
         benefitDiscounts.put(benefitType, discount);
     }
 
+    public String getBenefitDiscount(String benefit) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(benefitDiscounts.get(benefit));
+    }
+
+    public List<String> getBenefitCategories() {
+        return new ArrayList<>(benefitDiscounts.keySet());
+    }
+
     public int getAllBenefitDiscount() {
         return sumAllBenefitDiscount();
     }
@@ -38,7 +50,10 @@ public class UserBenefit {
     private int sumAllBenefitDiscount() {
         int allBenefit = 0;
         for (String benefitType : benefitDiscounts.keySet()) {
-            allBenefit += benefitDiscounts.get(benefitType);
+            if (!benefitType.equals(MenuList.GIFT_MENU.getMenuCategory())) {
+                allBenefit += benefitDiscounts.get(benefitType);
+            }
+
         }
 
         return allBenefit;
