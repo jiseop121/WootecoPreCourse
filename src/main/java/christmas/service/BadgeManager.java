@@ -3,20 +3,24 @@ package christmas.service;
 public enum BadgeManager {
     STAR("별"),
     TREE("트리"),
-    SANTA("산타");
+    SANTA("산타"),
+    NONE("없음");
 
-    private String badge;
+    private final String badge;
 
     BadgeManager(String badge) {
         this.badge = badge;
     }
 
     public static String getBadge(int totalBenefitAmount) {
-        if (totalBenefitAmount > 20000) {
+        totalBenefitAmount = Math.abs(totalBenefitAmount);
+        if (totalBenefitAmount >= 20000) {
             return SANTA.badge;
-        } else if (totalBenefitAmount > 10000) {
+        } else if (totalBenefitAmount >= 10000) {
             return TREE.badge;
+        } else if (totalBenefitAmount >= 5000) {
+            return STAR.badge;
         }
-        return STAR.badge;
+        return NONE.badge;
     }
 }
