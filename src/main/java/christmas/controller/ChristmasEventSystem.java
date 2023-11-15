@@ -1,32 +1,76 @@
 package christmas.controller;
 
-import christmas.domain.UserDay;
-import christmas.domain.UserOrderMenu;
+import christmas.domain.user.UserAmount;
+import christmas.domain.user.UserBadge;
+import christmas.domain.user.UserBenefit;
+import christmas.domain.user.UserDay;
+import christmas.domain.user.UserGift;
+import christmas.domain.user.UserOrderMenu;
+import christmas.service.AmountCalculator;
+import christmas.service.BadgeManager;
 import christmas.view.InputView;
+import christmas.view.OutputView;
 
 public class ChristmasEventSystem {
-    private final InputView inputView;
     private static final int MAX_INPUT_COUNT = 10;
 
     private final InputParser inputParser = new InputParser();
+    private final InputView inputView = new InputView();
 
-    public ChristmasEventSystem(InputView inputView) {
-        this.inputView = inputView;
-    }
+    private UserDay userDay;
+    private UserOrderMenu userOrderMenu;
+    private UserGift userGift;
+    private UserAmount userAmount;
+    private UserBenefit userBenefit;
 
     public void controller() {
         inputUserDemand();
+        christmasEvent();
     }
 
     private void inputUserDemand() {
+        InputView inputView = new InputView();
         inputView.displayIntro();
 
-        UserDay userDay = inputDayAgain();
-        UserOrderMenu userOrderMenu = inputOrderMenuAgain();
+        userDay = inputDayAgain();
+        userOrderMenu = inputOrderMenuAgain();
     }
 
     private void christmasEvent() {
+        OutputView outputView = new OutputView();
+        OutputMessageGenerator outputMessageGenerator = new OutputMessageGenerator();
+        //주문 내역 출력
+        outputView.displayUserMenuList(outputMessageGenerator.getMenuListMessage(userOrderMenu));
 
+        //총 주문 금액
+        int calculateAmountBeforeBenefit = AmountCalculator.calculateAmountBeforeBenefit(userOrderMenu);
+        userAmount = new UserAmount(calculateAmountBeforeBenefit);
+        //+총 주문 금액 출력
+        outputView.displayAmountBeforeBenefitMessage(outputMessageGenerator.getAmountBeforeBenefitMessage(userAmount));
+
+        //증정 메뉴
+        userGift = new UserGift(calculateAmountBeforeBenefit, userOrderMenu.getMenuCategoryCount());
+        //+증정 메뉴 출력
+        outputView.displayGiftMenuMessage(outputMessageGenerator.getGiftMenuMessage(userGift));
+
+        //혜택 내역
+        userBenefit = new UserBenefit(userDay, userOrderMenu, userGift);
+        userAmount.applyTotalBenefitAmount(userBenefit.getAllBenefitDiscount());
+        //+혜택 내역 출력
+        outputView.displayBenefitMessage(outputMessageGenerator.getBenefitMessage(userBenefit));
+
+        //총혜택 금액
+        //+총혜택 내역 출력
+        outputView.displayTotalBenefitAmountMessage(outputMessageGenerator.getTotalBenefitAmountMessage(userAmount));
+
+        //예상 결제 금액
+        //+예상 결제 금액 출력
+        outputView.displayAmountAfterBenefitMessage(outputMessageGenerator.getAmountAfterBenefitMessage(userAmount));
+
+        //이벤트 배지
+        UserBadge userBadge = new UserBadge(BadgeManager.getBadge(userAmount.getTotalBenefitAmount()));
+        //+이벤트 배지 출력
+        outputView.displayBadgeMessage(outputMessageGenerator.getBadgeMessage(userBadge));
     }
 
     private UserDay inputDayAgain() {
@@ -45,7 +89,11 @@ public class ChristmasEventSystem {
         int inputCount = 0;
         while (inputCount < MAX_INPUT_COUNT) {
             try {
-                inputView.inputOrderMenu();
+                inputParser.parseInputOrderMenuToList(inputView.inputOrderMenu());
+//                OutputView outputView = new OutputView();
+//                OutputMessageGenerator outputMessageGenerator = new OutputMessageGenerator();
+//                outputView.displayUserMenuList(outputMessageGenerator.getMenuListMessage(
+//                        new UserOrderMenu(inputParser.getMenuList(), inputParser.getCountList())));
                 return new UserOrderMenu(inputParser.getMenuList(), inputParser.getCountList());
             } catch (IllegalArgumentException e) {
                 inputCount++;
