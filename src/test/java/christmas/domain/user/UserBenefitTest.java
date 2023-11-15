@@ -2,9 +2,7 @@ package christmas.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import christmas.domain.MenuList;
 import christmas.service.AmountCalculator;
-import christmas.service.BenefitCalculator;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class UserBenefitTest {
-    @ParameterizedTest(name = "[{0}] DAY 입력: {1}")
+    @ParameterizedTest(name = "[{0}]")
     @MethodSource("userBenefitCheckTest")
     @DisplayName("정상적인 혜택 적용")
     void userBenefitTest1(String caseMessage, int inputDay, List<String> menuList, List<Integer> countList,
@@ -21,7 +19,8 @@ class UserBenefitTest {
         UserBenefit userBenefit = new UserBenefit(
                 new UserDay(inputDay),
                 new UserOrderMenu(menuList, countList),
-                new UserGift(AmountCalculator.calculateAmountBeforeBenefit(new UserOrderMenu(menuList, countList)))
+                new UserGift(AmountCalculator.calculateAmountBeforeBenefit(new UserOrderMenu(menuList, countList)),
+                        new UserOrderMenu(menuList, countList).getMenuCategoryCount())
         );
 
         assertThat(userBenefit.getAllBenefitDiscount())
@@ -30,15 +29,14 @@ class UserBenefitTest {
 
     private static Stream<Arguments> userBenefitCheckTest() {
         return Stream.of(
-                Arguments.arguments("증정 적용 확인", 28,
+                Arguments.arguments(" 확인", 28,
                         List.of(
                                 "양송이수프"
                         ),
                         List.of(
                                 20
                         ),
-                        BenefitCalculator.calculateAmountGiftMenu(
-                                new UserGift(MenuList.APPETIZER.getMenuDetails().get("양송이수프") * 20))
+                        0
                 ),
                 Arguments.arguments("평일 디저트 할인 적용 확인", 26,
                         List.of(
