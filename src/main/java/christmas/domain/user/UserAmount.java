@@ -15,18 +15,9 @@ public class UserAmount {
         this.totalBenefitAmount = 0;
     }
 
-    public void applyAmountGiftMenu(int amountGiftMenu) {
-        this.amountGiftMenu = amountGiftMenu;
-        amountAfterBenefit -= amountGiftMenu;
-    }
-
     public void applyTotalBenefitAmount(int totalBenefitAmount) {
         this.totalBenefitAmount = totalBenefitAmount;
         amountAfterBenefit += totalBenefitAmount;
-    }
-
-    public int getTotalBenefitAmount() {
-        return totalBenefitAmount;
     }
 
     public String getMessageTotalBenefitAmount() {
