@@ -1,11 +1,9 @@
 package christmas.domain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public enum MenuList {
     APPETIZER("애피타이저", Map.of(
@@ -26,9 +24,12 @@ public enum MenuList {
             "제로콜라", 3000,
             "레드와인", 60000,
             "샴페인", 25000
+    )),
+    GIFT_MENU("증정 메뉴", Map.of(
+            "샴페인", BEVERAGE.menuDetails.get("샴페인")
     ));
 
-    private static final String GIFT_MENU = "샴페인";
+    private static final String GIFT_MENU_NAME = "샴페인";
 
     private final String menuCategory;
     private final Map<String, Integer> menuDetails;
@@ -60,11 +61,11 @@ public enum MenuList {
         return new ArrayList<>(menuList.menuDetails.keySet());
     }
 
-    public static Map<String, Integer> getCategoryCount(Collection<String> menuNames) {
+    public static Map<String, Integer> getCategoryCount(Map<String, Integer> orderMenu) {
         Map<String, Integer> menuCategoryCount = initiateMenuCategoryCount();
 
         for (MenuList menuList : values()) {
-            int categoryCount = oneCategoryCount(menuNames, menuList);
+            int categoryCount = oneCategoryCount(orderMenu, menuList);
             menuCategoryCount.put(menuList.menuCategory, categoryCount);
         }
         return menuCategoryCount;
@@ -79,11 +80,11 @@ public enum MenuList {
         ));
     }
 
-    private static int oneCategoryCount(Collection<String> menuNames, MenuList menuList) {
+    private static int oneCategoryCount(Map<String, Integer> orderMenu, MenuList menuList) {
         int categoryCount = 0;
-        for (String menu : menuNames) {
+        for (String menu : orderMenu.keySet()) {
             if (menuList.menuDetails.containsKey(menu)) {
-                categoryCount++;
+                categoryCount += orderMenu.get(menu);
             }
         }
         return categoryCount;
@@ -91,7 +92,7 @@ public enum MenuList {
 
     public static String getGiftMenuName() {
         for (String menu : BEVERAGE.menuDetails.keySet()) {
-            if (Objects.equals(menu, GIFT_MENU)) {
+            if (menu.equals(GIFT_MENU)) {
                 return menu;
             }
         }
@@ -99,7 +100,7 @@ public enum MenuList {
     }
 
     public static int getGiftMenuPrice() {
-        return BEVERAGE.menuDetails.get(GIFT_MENU);
+        return GIFT_MENU.menuDetails.get(GIFT_MENU_NAME);
     }
 
     public static int getMenuPrice(String userMenuName) {
