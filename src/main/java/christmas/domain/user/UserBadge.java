@@ -1,7 +1,7 @@
 package christmas.domain.user;
 
 public class UserBadge {
-    private String badge;
+    private String badge = "";
 
     public UserBadge(String badge) {
         this.badge = badge;

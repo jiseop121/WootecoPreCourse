@@ -15,6 +15,7 @@ public class UserGift {
 
     private void setUserGift(int amountBeforeBenefit, Map<String, Integer> userOrderMenuCategoryCount) {
         if (SystemValidator.isPossibleGift(amountBeforeBenefit, userOrderMenuCategoryCount)) {
+            //System.out.println(userOrderMenuCategoryCount.get(MenuList.MAIN_COURSE.getMenuCategory()));
             this.giftMenuName = giftMenu();
             this.giftMenuPrice = giftMenuPrice();
         }

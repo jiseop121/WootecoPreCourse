@@ -39,21 +39,27 @@ public class UserBenefit {
         return decimalFormat.format(benefitDiscounts.get(benefit));
     }
 
+    public String getMessageTotalBenefitAmount() {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(sumAllBenefitDiscount());
+    }
+
     public List<String> getBenefitCategories() {
         return new ArrayList<>(benefitDiscounts.keySet());
     }
 
     public int getAllBenefitDiscount() {
+        return sumAllBenefitDiscount() - benefitDiscounts.get(MenuList.GIFT_MENU.getMenuCategory());
+    }
+
+    public int totalBenefitAmount() {
         return sumAllBenefitDiscount();
     }
 
     private int sumAllBenefitDiscount() {
         int allBenefit = 0;
         for (String benefitType : benefitDiscounts.keySet()) {
-            if (!benefitType.equals(MenuList.GIFT_MENU.getMenuCategory())) {
-                allBenefit += benefitDiscounts.get(benefitType);
-            }
-
+            allBenefit += benefitDiscounts.get(benefitType);
         }
 
         return allBenefit;

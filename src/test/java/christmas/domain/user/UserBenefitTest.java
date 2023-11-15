@@ -2,7 +2,7 @@ package christmas.domain.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import christmas.service.AmountCalculator;
+import christmas.service.MenuAmountCalculator;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,7 @@ class UserBenefitTest {
         UserBenefit userBenefit = new UserBenefit(
                 new UserDay(inputDay),
                 new UserOrderMenu(menuList, countList),
-                new UserGift(AmountCalculator.calculateAmountBeforeBenefit(new UserOrderMenu(menuList, countList)),
+                new UserGift(MenuAmountCalculator.calculateAmountBeforeBenefit(new UserOrderMenu(menuList, countList)),
                         new UserOrderMenu(menuList, countList).getMenuCategoryCount())
         );
 

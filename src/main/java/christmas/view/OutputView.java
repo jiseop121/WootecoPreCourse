@@ -1,5 +1,9 @@
 package christmas.view;
 
+import christmas.domain.user.UserBenefit;
+import christmas.domain.user.UserDay;
+import christmas.domain.user.UserOrderMenu;
+import christmas.service.RecommendGenerator;
 import christmas.view.message.view.OutputMessage;
 
 public class OutputView {
@@ -8,14 +12,20 @@ public class OutputView {
         System.out.println(message);
     }
 
-    public void displayUserMenuList(String message) {
-        displayStartMessage(OutputMessage.ORDERED_MENU);
-        displayMessageAndEnter(message);
+    public void displayMessageIntro(UserDay userDay) {
+        System.out.println(String.format(OutputMessage.OUTPUT_INTRO.getMessage(), userDay.getDay()));
     }
 
-    public void displayAmountBeforeBenefitMessage(String message) {
+    public void displayUserMenuList(String message, UserOrderMenu userOrderMenu) {
+        displayStartMessage(OutputMessage.ORDERED_MENU);
+        displayMessageAndEnter(message);
+        displayMessageAndEnter(RecommendGenerator.recommendMenu(userOrderMenu));
+    }
+
+    public void displayAmountBeforeBenefitMessage(String message, int amountBeforeBenefit) {
         displayStartMessage(OutputMessage.AMOUNT_BEFORE_BENEFIT);
         displayMessageAndEnter(message);
+        displayMessageAndEnter(RecommendGenerator.recommendLowAmountBeforeBenefit(amountBeforeBenefit));
     }
 
     public void displayBenefitMessage(String message) {
@@ -38,9 +48,11 @@ public class OutputView {
         displayMessageAndEnter(message);
     }
 
-    public void displayBadgeMessage(String message) {
+    public void displayBadgeMessage(String message, UserBenefit userBenefit, UserDay userDay) {
         displayStartMessage(OutputMessage.BADGE);
         displayMessageAndEnter(message);
+        displayMessageAndEnter(RecommendGenerator.recommendNextBadge(userBenefit));
+        displayMessageAndEnter(RecommendGenerator.recommendChristmasDday(userDay));
     }
 
     private void displayStartMessage(OutputMessage outputMessage) {

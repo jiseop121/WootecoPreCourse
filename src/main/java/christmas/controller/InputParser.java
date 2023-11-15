@@ -14,8 +14,8 @@ public class InputParser {
     private static final int COUNT_INDEX = 1;
 
     private final InputValidator inputValidator = new InputValidator();
-    private final List<String> menuList = new ArrayList<>();
-    private final List<Integer> countList = new ArrayList<>();
+    private List<String> menuList = new ArrayList<>();
+    private List<Integer> countList = new ArrayList<>();
     private int day;
 
     public int parseInputDay(String inputDay) {
