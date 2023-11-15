@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class SystemValidator {
-    private static final int MAX_ORDER_COUNT = 1000;
+    private static final int MAX_ORDER_COUNT = 20;
     private static final int MIN_ORDER_COUNT = 1;
     private static final int FIRST = 1;
     private static final int THIRTY_FIRST = 31;
@@ -29,6 +29,12 @@ public class SystemValidator {
 
     public static boolean isPossibleGift(int amountBeforeBenefit, Map<String, Integer> userOrderMenuCategoryCount) {
         return !isOnlyBeverage(userOrderMenuCategoryCount) && !isLessThanMinimumAmount(amountBeforeBenefit);
+    }
+
+    public static void validateMenuName(List<String> menuList, List<Integer> countList) {
+        if (hasDuplicateMenuName(menuList) || isOutOfRangeOrderCount(countList) || noMenuInMenuList(menuList)) {
+            displayAndThrowException(ErrorMessage.INCORRECT_ORDER_FORMAT);
+        }
     }
 
     private static boolean isOnlyBeverage(Map<String, Integer> userOrderMenuCategoryCount) {
@@ -53,18 +59,24 @@ public class SystemValidator {
     }
 
     private static boolean isOutOfRangeOrderCount(List<Integer> countList) {
+        return hasLessThanMinimum(countList) || isOverCount(countList);
+    }
+
+    private static boolean isOverCount(List<Integer> countList) {
+        return addAllCount(countList) > MAX_ORDER_COUNT;
+    }
+
+    private static int addAllCount(List<Integer> countList) {
+        return countList.stream().reduce(0, Integer::sum);
+    }
+
+    private static boolean hasLessThanMinimum(List<Integer> countList) {
         for (int count : countList) {
-            if (count > MAX_ORDER_COUNT || count < MIN_ORDER_COUNT) {
+            if (count < MIN_ORDER_COUNT) {
                 return true;
             }
         }
         return false;
-    }
-
-    public static void validateMenuName(List<String> menuList, List<Integer> countList) {
-        if (hasDuplicateMenuName(menuList) || isOutOfRangeOrderCount(countList) || noMenuInMenuList(menuList)) {
-            displayAndThrowException(ErrorMessage.INCORRECT_ORDER_FORMAT);
-        }
     }
 
     private static boolean noMenuInMenuList(List<String> menuList) {
