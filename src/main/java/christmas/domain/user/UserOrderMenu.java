@@ -24,7 +24,7 @@ public class UserOrderMenu {
     }
 
     public Map<String, Integer> getMenuCategoryCount() {
-        return MenuList.getCategoryCount(orderMenu.keySet());
+        return MenuList.getCategoryCount(orderMenu);
     }
 
     public List<String> getOrderMenuNames() {
