@@ -36,7 +36,7 @@ public class OutputMessageGenerator {
     }
 
     public String getBenefitMessage(UserBenefit userBenefit) {
-        if (userBenefit.getAllBenefitDiscount() == ZERO_COUNT) {
+        if (userBenefit.totalBenefitAmount() == ZERO_COUNT) {
             return getNoDataMessage();
         }
         StringBuilder message = new StringBuilder();
@@ -57,18 +57,17 @@ public class OutputMessageGenerator {
             return getNoDataMessage();
         }
         return userGift.getGiftMenuNameMessage()
-                + userGift.getGiftMenuNameMessage()
                 + OutputMessage.SPACE_BAR.getMessage()
                 + userGift.getGiftCountMessage()
                 + OutputMessage.COUNT_UNIT.getMessage()
                 + OutputMessage.ENTER.getMessage();
     }
 
-    public String getTotalBenefitAmountMessage(UserAmount userAmount) {
-        if (userAmount.getMessageTotalBenefitAmount().equals(ZERO_COUNT_MESSAGE)) {
+    public String getTotalBenefitAmountMessage(UserBenefit userBenefit) {
+        if (userBenefit.totalBenefitAmount() == ZERO_COUNT) {
             return getNoDataMessage();
         }
-        return userAmount.getMessageTotalBenefitAmount()
+        return userBenefit.getMessageTotalBenefitAmount()
                 + OutputMessage.MONEY_UNIT.getMessage()
                 + OutputMessage.ENTER.getMessage();
     }
