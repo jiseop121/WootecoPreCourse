@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InputValidator {
-    private static final int MENU_INDEX = 0;
     private static final int COUNT_INDEX = 1;
 
     public void validateInputDay(String inputDay) {

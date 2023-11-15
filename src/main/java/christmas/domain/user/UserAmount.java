@@ -4,24 +4,18 @@ import java.text.DecimalFormat;
 
 public class UserAmount {
     private final int amountBeforeBenefit;
-    private int amountGiftMenu;
     private int totalBenefitAmount;
     private int amountAfterBenefit;
 
     public UserAmount(int amountBeforeBenefit) {
         this.amountBeforeBenefit = amountBeforeBenefit;
         this.amountAfterBenefit = amountBeforeBenefit;
-        this.amountGiftMenu = 0;
         this.totalBenefitAmount = 0;
     }
 
     public void applyTotalBenefitAmount(int totalBenefitAmount) {
         this.totalBenefitAmount = totalBenefitAmount;
         amountAfterBenefit += totalBenefitAmount;
-    }
-
-    public String getMessageTotalBenefitAmount() {
-        return getMessageAmount(totalBenefitAmount);
     }
 
     public String getMessageAmountBeforeBenefit() {

@@ -15,12 +15,6 @@ public class SystemValidator {
     private static final int MINIMUM_AMOUNT_FOR_BADGE = 120000;
     private static final int ZERO = 0;
 
-//    public void validateOrderMenu(Map<String, Integer> orderMenu) {
-//        if (isOverMaxOrder(orderMenu.values())) {
-//            displayAndThrowException(ErrorMessage.INCORRECT_ORDER_FORMAT);
-//        }
-//    }
-
     public static void validateDay(int day) {
         if (isNotDecemberDay(day)) {
             displayAndThrowException(ErrorMessage.INCORRECT_DAY_FORMAT);
