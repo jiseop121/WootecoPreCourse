@@ -43,7 +43,7 @@ public class UserGift {
     }
 
     private boolean isAvailableGetGift(int amountBeforeBenefit) {
-        return amountBeforeBenefit > MINIMUM_AMOUNT_FOR_BADGE;
+        return amountBeforeBenefit >= MINIMUM_AMOUNT_FOR_BADGE;
     }
 
 }
