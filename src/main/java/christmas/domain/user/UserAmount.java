@@ -1,5 +1,7 @@
 package christmas.domain.user;
 
+import java.text.DecimalFormat;
+
 public class UserAmount {
     private final int amountBeforeBenefit;
     private int amountGiftMenu;
@@ -39,11 +41,8 @@ public class UserAmount {
         return getMessageAmount(amountAfterBenefit);
     }
 
-    public String getMessageAmountGiftMenu() {
-        return getMessageAmount(amountGiftMenu);
-    }
-
     private String getMessageAmount(int amount) {
-        return String.valueOf(amount);
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(amount);
     }
 }
