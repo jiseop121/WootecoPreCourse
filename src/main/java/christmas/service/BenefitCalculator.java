@@ -1,6 +1,7 @@
 package christmas.service;
 
 import christmas.domain.BenefitCalendar;
+import christmas.domain.MenuList;
 import christmas.domain.user.UserDay;
 import christmas.domain.user.UserGift;
 import christmas.domain.user.UserOrderMenu;
@@ -25,14 +26,14 @@ public class BenefitCalculator {
 
     public static int applyWeekdayDiscount(UserDay userDay, UserOrderMenu userOrderMenu) {
         if (isCorrectBenefitType(userDay, BenefitCalendar.WEEKDAY)) {
-            return WEEKDAY_DISCOUNT_MONEY * discountCount(userOrderMenu, BenefitCalendar.WEEKDAY.getCategory());
+            return WEEKDAY_DISCOUNT_MONEY * discountCount(userOrderMenu, MenuList.DESSERT.getMenuCategory());
         }
         return NO_BENEFIT;
     }
 
     public static int applyWeekendDiscount(UserDay userDay, UserOrderMenu userOrderMenu) {
         if (isCorrectBenefitType(userDay, BenefitCalendar.WEEKEND)) {
-            return WEEKEND_DISCOUNT_MONEY * discountCount(userOrderMenu, BenefitCalendar.WEEKEND.getCategory());
+            return WEEKEND_DISCOUNT_MONEY * discountCount(userOrderMenu, MenuList.MAIN_COURSE.getMenuCategory());
         }
         return NO_BENEFIT;
     }
@@ -45,7 +46,12 @@ public class BenefitCalculator {
     }
 
     private static int discountCount(UserOrderMenu userOrderMenu, String menuCategory) {
-        return userOrderMenu.getMenuCategoryCount().get(menuCategory);
+        try {
+            return userOrderMenu.getMenuCategoryCount().get(menuCategory);
+        } catch (NullPointerException e) {
+            return 0;
+        }
+
     }
 
     private static int dayPerThousand(UserDay userDay) {
