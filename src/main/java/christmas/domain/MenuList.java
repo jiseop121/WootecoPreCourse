@@ -47,6 +47,14 @@ public enum MenuList {
         return menuCategory;
     }
 
+    public List<String> getMenuDetailsNames() {
+        return new ArrayList<>(menuDetails.keySet());
+    }
+
+    public int getMenuPrice(String menuName) {
+        return menuDetails.get(menuName);
+    }
+
     public static List<String> getAllMenu() {
         List<String> allMenu = new ArrayList<>();
         allMenu.addAll(oneCategoryAllMenu(APPETIZER));
@@ -92,7 +100,7 @@ public enum MenuList {
 
     public static String getGiftMenuName() {
         for (String menu : BEVERAGE.menuDetails.keySet()) {
-            if (menu.equals(GIFT_MENU)) {
+            if (GIFT_MENU.menuDetails.containsKey(menu)) {
                 return menu;
             }
         }
@@ -103,14 +111,5 @@ public enum MenuList {
         return GIFT_MENU.menuDetails.get(GIFT_MENU_NAME);
     }
 
-    public static int getMenuPrice(String userMenuName) {
-        for (MenuList menuList : values()) {
-            for (String menuName : menuList.menuDetails.keySet()) {
-                if (menuName.equals(userMenuName)) {
-                    return menuList.menuDetails.get(menuName);
-                }
-            }
-        }
-        return 0;
-    }
+
 }
